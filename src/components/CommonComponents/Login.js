@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {userLogin} from '../redux/actions/AuthActions'
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' }
+    this.state = { email: '', password: '', isLoading: false }
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading : false });
   }
 
   handleChange = (e) => {
@@ -17,11 +21,12 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // console.log(this.state);
+    this.setState({ isLoading: true });
     this.props.userLogin(this.state);
   } 
 
   render() { 
-    console.log('loginauth', this.props.auth)
+    console.log('this.props.authError', this.props)
     return ( 
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
     <Grid.Column style={{ maxWidth: 450 }}>
@@ -29,7 +34,7 @@ class LoginForm extends Component {
         {this.props.userType}
       </Header>
       <Form size='large'>
-        <Segment stacked>
+        <Segment stacked loading={!this.props.auth.isLoaded}>
           <Form.Input 
             fluid
             id='email'
@@ -47,7 +52,7 @@ class LoginForm extends Component {
             placeholder='Password'
             type='password'
           />
-          <Button color='teal' fluid size='large' onClick={this.handleSubmit}>
+          <Button color='teal' fluid size='large' onClick={this.handleSubmit} loading={this.state.isLoading}>
             Login
           </Button>
         </Segment>
@@ -69,6 +74,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.firebase.auth,
     authError: state.firebase.auth.authError
   }
 }

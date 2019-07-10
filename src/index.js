@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import 'semantic-ui-css/semantic.min.css'
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux';
 import RootReducer from './components/redux/reducers/RootReducer';
